@@ -8,6 +8,7 @@ pub enum EmailError {
     NoInternetConnection,
     DnsError,
     InvalidMxRecords,
+    TemporaryEmailAddress,
 }
 
 // Implémentation du trait fmt::Display pour notre type d'erreur
@@ -23,6 +24,10 @@ impl fmt::Display for EmailError {
             EmailError::InvalidMxRecords => {
                 write!(f, "Le domaine n'a pas d'enregistrements MX valides.")
             }
+            EmailError::TemporaryEmailAddress => write!(
+                f,
+                "L'adresse email provient d'un service d'e-mails temporaires."
+            ),
         }
     }
 }

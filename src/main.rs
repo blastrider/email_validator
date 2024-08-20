@@ -6,6 +6,7 @@ mod network;
 use dns::mx_records::validate_mx_records;
 use email::general_format::is_lowercase;
 use email::general_format::is_valid_email;
+use email::temp_mails::TempEmailValidator;
 
 use crate::email::parser_module::parse_email;
 
@@ -44,6 +45,13 @@ fn main() {
                 process::exit(1);
             }
             println!("The domain '{}' has valid MX records.", parts.domain);
+
+            // Vérifier si l'adresse e-mail est temporaire
+            let validator = TempEmailValidator::new();
+            if let Err(e) = validator.is_temporary_email(&parts.domain) {
+                eprintln!("Invalid email: {}", e);
+                process::exit(1);
+            }
         }
         Err(e) => {
             eprintln!("Erreur de parsing de l'adresse mail: {}", e);
