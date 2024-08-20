@@ -24,5 +24,5 @@ fn main() {
         process::exit(1);
     }
 
-    println!("'{}' is a valid email address.", email);
+    println!("'{}' est une adresse mail valide.", email);
 }
