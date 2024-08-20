@@ -1,4 +1,4 @@
-use crate::error::EmailError;
+use crate::{email::local_part::validate_local_part, error::EmailError};
 
 pub struct EmailParts {
     pub username: String,
@@ -11,6 +11,9 @@ pub fn parse_email(email: &str) -> Result<EmailParts, EmailError> {
     if parts.len() != 2 {
         return Err(EmailError::InvalidFormat);
     }
+
+    // Validation du local-part
+    validate_local_part(parts[0])?;
 
     Ok(EmailParts {
         username: parts[0].to_string(),

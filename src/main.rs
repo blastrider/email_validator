@@ -1,9 +1,11 @@
 mod email;
 mod error;
 
-use crate::email::parser_module::parse_email;
 use email::general_format::is_lowercase;
 use email::general_format::is_valid_email;
+
+use crate::email::parser_module::parse_email;
+
 use std::env;
 use std::process;
 
