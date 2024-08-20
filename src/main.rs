@@ -44,7 +44,6 @@ fn main() {
                 eprintln!("Failed to validate MX records: {}", e);
                 process::exit(1);
             }
-            println!("The domain '{}' has valid MX records.", parts.domain);
 
             // Vérifier si l'adresse e-mail est temporaire
             let validator = TempEmailValidator::new();
@@ -52,6 +51,7 @@ fn main() {
                 eprintln!("Invalid email: {}", e);
                 process::exit(1);
             }
+            println!("Le domaine '{}' a un MX valide et ne fait pas parti des providers de mails temporaires.", parts.domain);
         }
         Err(e) => {
             eprintln!("Erreur de parsing de l'adresse mail: {}", e);
