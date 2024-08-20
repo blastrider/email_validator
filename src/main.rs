@@ -14,12 +14,12 @@ fn main() {
 
     let email = &args[1];
 
-    if let Err(e) = email::is_lowercase(email) {
+    if let Err(e) = email::general_format::is_lowercase(email) {
         eprintln!("{}", e);
         process::exit(1);
     }
 
-    if let Err(e) = email::is_valid_email(email) {
+    if let Err(e) = email::general_format::is_valid_email(email) {
         eprintln!("{}", e);
         process::exit(1);
     }
