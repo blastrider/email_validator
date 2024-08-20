@@ -1,6 +1,9 @@
 mod email;
 mod error;
 
+use crate::email::parser_module::parse_email;
+use email::general_format::is_lowercase;
+use email::general_format::is_valid_email;
 use std::env;
 use std::process;
 
@@ -14,15 +17,25 @@ fn main() {
 
     let email = &args[1];
 
-    if let Err(e) = email::general_format::is_lowercase(email) {
+    if let Err(e) = is_lowercase(email) {
         eprintln!("{}", e);
         process::exit(1);
     }
 
-    if let Err(e) = email::general_format::is_valid_email(email) {
+    if let Err(e) = is_valid_email(email) {
         eprintln!("{}", e);
         process::exit(1);
     }
 
-    println!("'{}' est une adresse mail valide.", email);
+    match parse_email(email) {
+        Ok(parts) => {
+            println!("'{}' is a valid email address.", email);
+            println!("Username: {}", parts.username);
+            println!("Domain: {}", parts.domain);
+        }
+        Err(e) => {
+            eprintln!("Failed to parse email: {}", e);
+            process::exit(1);
+        }
+    }
 }
