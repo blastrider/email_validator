@@ -1,6 +1,9 @@
+mod dns;
 mod email;
 mod error;
+mod network;
 
+use dns::mx_records::validate_mx_records;
 use email::general_format::is_lowercase;
 use email::general_format::is_valid_email;
 
@@ -31,12 +34,19 @@ fn main() {
 
     match parse_email(email) {
         Ok(parts) => {
-            println!("'{}' is a valid email address.", email);
-            println!("Username: {}", parts.username);
-            println!("Domain: {}", parts.domain);
+            println!("'{}' est une adresse mail valide.", email);
+            println!("Nom d'utilisateur: {}", parts.username);
+            println!("Domaine: {}", parts.domain);
+
+            // Valider les enregistrements MX du domaine
+            if let Err(e) = validate_mx_records(&parts.domain) {
+                eprintln!("Failed to validate MX records: {}", e);
+                process::exit(1);
+            }
+            println!("The domain '{}' has valid MX records.", parts.domain);
         }
         Err(e) => {
-            eprintln!("Failed to parse email: {}", e);
+            eprintln!("Erreur de parsing de l'adresse mail: {}", e);
             process::exit(1);
         }
     }

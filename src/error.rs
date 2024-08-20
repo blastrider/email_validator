@@ -5,6 +5,9 @@ use std::fmt;
 pub enum EmailError {
     InvalidFormat,
     NotLowercase,
+    NoInternetConnection,
+    DnsError,
+    InvalidMxRecords,
 }
 
 // Implémentation du trait fmt::Display pour notre type d'erreur
@@ -13,6 +16,13 @@ impl fmt::Display for EmailError {
         match *self {
             EmailError::InvalidFormat => write!(f, "L'adresse email a un format invalide."),
             EmailError::NotLowercase => write!(f, "L'adresse email n'est pas en minuscules."),
+            EmailError::NoInternetConnection => {
+                write!(f, "Aucune connexion Internet n'a été détectée.")
+            }
+            EmailError::DnsError => write!(f, "Erreur DNS lors de la résolution du domaine."),
+            EmailError::InvalidMxRecords => {
+                write!(f, "Le domaine n'a pas d'enregistrements MX valides.")
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 use crate::error::EmailError;
 
+use super::special_chars::validate_special_chars;
+
 pub fn validate_local_part(local_part: &str) -> Result<(), EmailError> {
     // Vérifiez la longueur du local-part
     if local_part.is_empty() || local_part.len() > 64 {
@@ -15,6 +17,9 @@ pub fn validate_local_part(local_part: &str) -> Result<(), EmailError> {
     if local_part.contains("..") {
         return Err(EmailError::InvalidFormat);
     }
+
+    // Vérification des caractères spéciaux
+    validate_special_chars(local_part)?;
 
     // Vérifiez que le local-part contient uniquement des caractères valides
     let valid_chars = |c: char| {
